@@ -1,0 +1,14 @@
+rootProject.name = 'spring-cloud-002'
+
+def modules = [
+    'eureka-server'
+    , 'user-api'
+    , 'user-provider'
+    , 'user-consumer'
+]
+
+modules.each { it -> 
+    include it
+    project(":${it}").projectDir = file("${it}")
+    project(":${it}").buildFileName = "${it}.gradle"
+}

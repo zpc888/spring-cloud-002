@@ -1,0 +1,84 @@
+plugins {
+	id "org.springframework.boot" version "2.3.2.RELEASE" apply false
+	id 'io.spring.dependency-management' version '1.0.9.RELEASE' apply false
+	id 'java'
+}
+
+// allprojects including this
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'io.spring.dependency-management'
+
+	group = 'com.prot.springcloud002'
+	version = '0.0.1-SNAPSHOT'
+	sourceCompatibility = '14'
+
+	repositories {
+		mavenCentral()
+	}
+
+	ext {
+		set('springCloudVersion', "Hoxton.SR6")
+	}
+
+	dependencies {
+        compile('org.slf4j:slf4j-api:1.7.30')
+		compile('org.apache.commons:commons-lang3:3.5')
+
+		testImplementation('org.springframework.boot:spring-boot-starter-test') {
+			exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+		}
+	}
+
+	dependencyManagement {
+		imports {
+			mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+		}
+	}
+
+	test {
+		useJUnitPlatform()
+	}
+
+}
+
+project(':eureka-server') {
+    apply plugin: 'org.springframework.boot'
+
+	dependencies {
+		implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server'
+		implementation 'org.springframework.boot:spring-boot-starter-security'
+	}
+}
+
+project(':user-api') {
+	dependencies {
+		implementation "org.springframework.boot:spring-boot-starter-webflux:2.3.2.RELEASE"
+	}
+}
+
+project(':user-provider') {
+    apply plugin: 'org.springframework.boot'
+	dependencies {
+		compile project(':user-api')
+		implementation "org.springframework.boot:spring-boot-starter-webflux"
+		implementation 'org.springframework.boot:spring-boot-starter-actuator'
+		implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+	}
+}
+
+project(':user-consumer') {
+    apply plugin: 'org.springframework.boot'
+	dependencies {
+		compile project(':user-api')
+		implementation "io.github.openfeign:feign-httpclient"
+		implementation "org.springframework.boot:spring-boot-starter-webflux"
+		implementation 'org.springframework.boot:spring-boot-starter-actuator'
+		implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+		implementation 'org.springframework.cloud:spring-cloud-starter-netflix-hystrix'
+		implementation 'org.springframework.cloud:spring-cloud-starter-netflix-hystrix-dashboard'
+		implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+	}
+}
+
