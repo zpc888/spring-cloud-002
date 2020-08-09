@@ -5,6 +5,7 @@ import com.netflix.discovery.EurekaClient;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.prot.springcloud002.service.UserApiConsumer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,6 +29,9 @@ public class EchoConsumerController {
     @Autowired
     UserApiConsumer userApiConsumer;
 
+    @Value("${server.port}")
+    private int port;
+
     @GetMapping("/hi")
     public String sayHi() {
         List<InstanceInfo> instances = eurekaClient.getInstancesByVipAddress("user-provider", false);
@@ -49,7 +53,7 @@ public class EchoConsumerController {
     public String sayHi3() {
         final String url = "http://user-provider/hi";
         final String ret  = restTemplate.getForObject(url, String.class);
-        return "api client-3 echo what providers saying: [" + ret + "]";
+        return "port:" + port + " api client-3 echo what providers saying: [" + ret + "]";
     }
 
     @HystrixCommand(fallbackMethod = "fallbackForHi")
@@ -66,7 +70,7 @@ public class EchoConsumerController {
 
     @GetMapping("/users-app-status")
     public String displayUsersAppStatus() {
-        return userApiConsumer.getStatus();
+        return "port: " + port + " => " + userApiConsumer.getStatus();
     }
 
     @GetMapping("/map2")
