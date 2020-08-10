@@ -66,6 +66,7 @@ project(':user-provider') {
 		implementation 'org.springframework.boot:spring-boot-starter-actuator'
 		implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 		implementation 'org.springframework.cloud:spring-cloud-starter-sleuth'
+		implementation 'org.springframework.cloud:spring-cloud-starter-zipkin'
 	}
 }
 
@@ -81,6 +82,7 @@ project(':user-consumer') {
 		implementation 'org.springframework.cloud:spring-cloud-starter-netflix-hystrix-dashboard'
 		implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 		implementation 'org.springframework.cloud:spring-cloud-starter-sleuth'
+		implementation 'org.springframework.cloud:spring-cloud-starter-zipkin'
 	}
 }
 
@@ -90,5 +92,6 @@ project(':zuul-lab') {
 		implementation 'org.springframework.cloud:spring-cloud-starter-netflix-zuul'
 		implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
 		implementation 'org.springframework.cloud:spring-cloud-starter-sleuth'
+		implementation 'org.springframework.cloud:spring-cloud-starter-zipkin'
 	}
 }
