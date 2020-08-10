@@ -6,6 +6,7 @@ def modules = [
     , 'user-provider'
     , 'user-consumer'
     , 'zuul-lab'
+    , 'cloud-admin-lab'
 ]
 
 modules.each { it -> 
