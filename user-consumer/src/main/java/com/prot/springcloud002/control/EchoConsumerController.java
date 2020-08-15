@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,6 +19,7 @@ import java.util.Map;
 import java.util.Objects;
 
 @RestController
+@RefreshScope
 public class EchoConsumerController {
     @Autowired
     private EurekaClient eurekaClient;
@@ -31,6 +33,14 @@ public class EchoConsumerController {
 
     @Value("${server.port}")
     private int port;
+
+    @Value("${user.api.consumer.prop1:DEFAULT}")
+    private String configProp1;
+
+    @GetMapping("/show-config")
+    public String showConfig() {
+        return port + " => " + configProp1;
+    }
 
     @GetMapping("/hi")
     public String sayHi() {
